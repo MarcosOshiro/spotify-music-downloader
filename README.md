@@ -1,6 +1,6 @@
 # Spotify Music Downloader
 
-Running this script while listening to spotify (Linux Desktop Version) will download the music played **from youtube**. The music will be saved first on /tmp and when finished on ~/Music/<artist>/<album>/song-name.mp3
+Running this script while listening to spotify (Linux Desktop Version) will download the music played **from youtube**. The music will be saved first on /tmp and when finished on ~/Music/\<artist\>/\<album\>/song-name.mp3
 
 
 # Requeriments
