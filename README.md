@@ -32,6 +32,7 @@ Feel free to open issues and send pull requests =]
   * Handle d-bus errors
 
 **0.0.1**
+
 It's works, music is downloaded while spotify is playing...
 
 
