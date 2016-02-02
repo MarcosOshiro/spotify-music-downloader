@@ -143,7 +143,7 @@ def youtube_downloader(video_url, music_data):
         temp_file_path = temp_file_path.replace('.%(ext)s', ".mp3")
         shutil.move(temp_file_path, output_file_path)
 
-    print music_data.get('title')+': download finished -----'
+    print music_data.get('title')+'\'s download finished =) '
 
 
 def get_playing_now(session_bus):
