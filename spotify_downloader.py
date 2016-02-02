@@ -8,6 +8,7 @@ from os.path import expanduser, isfile, exists
 import sys
 from inspect import getmodule
 from multiprocessing import Pool
+import signal
 
 
 # ---------- CONFIG ----------
@@ -29,11 +30,12 @@ class MyLogger(object):
 
 
 def yt_hook(d):
-    if d['status'] == 'downloading':
-        print '.',
-        sys.stdout.flush()
-    elif d['status'] == 'finished':
-        print '\nDone downloading, now converting ...'
+    pass
+    # if d['status'] == 'downloading':
+    #     print '.',
+    #     sys.stdout.flush()
+    # elif d['status'] == 'finished':
+    #     print '\nDone downloading, now converting ...'
 
 #  decorator to send download function to background
 def async(decorated):
@@ -163,16 +165,25 @@ def spotify_handler(*args):
     music_data = spotify_grabber(metadata)
     youtube_grabber(music_data)
 
+def signal_handler(signal, frame):
+    print('You pressed Ctrl+C! Tchau!')
+    sys.exit(0)
+
+def worker():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 if __name__ == '__main__':
     DBusGMainLoop(set_as_default=True)
-    async.pool = Pool(32)
+    async.pool = Pool(4, worker)
     session_bus = dbus.SessionBus()
-    # if theres a music playing now, download it
-    get_playing_now(session_bus)
     # look for spotify signals (new music starts)
     session_bus.add_signal_receiver(spotify_handler, 'PropertiesChanged', None, 'org.mpris.MediaPlayer2.spotify', '/org/mpris/MediaPlayer2')
+
+    signal.signal(signal.SIGINT, signal_handler)
+
+    # if theres a music playing now, download it
+    get_playing_now(session_bus)
 
     loop = gobject.MainLoop()
     loop.run()
